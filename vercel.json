@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter os-history-museum build && node -e \"const fs=require('fs'), path=require('path'); const curDist=path.resolve('artifacts/os-history/dist'), altDist=path.resolve('dist'); const targetDist=fs.existsSync(curDist)?curDist:(fs.existsSync(altDist)?altDist:null); if(targetDist){ [path.resolve(process.cwd(), 'dist'), path.resolve(process.cwd(), 'artifacts/os-history/dist'), path.resolve(process.cwd(), 'artifacts/os-history/artifacts/os-history/dist')].forEach(p => { if(p !== targetDist){ fs.mkdirSync(path.dirname(p), {recursive: true}); fs.cpSync(targetDist, p, {recursive: true}); } }); }\"",
+  "buildCommand": "node scripts/vercel-build.cjs",
   "outputDirectory": "artifacts/os-history/dist",
   "framework": "vite",
   "rewrites": [
