@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter os-history-museum build",
-  "outputDirectory": "artifacts/os-history/dist",
+  "buildCommand": "pnpm --filter os-history-museum build && node -e \"const fs=require('fs'); fs.cpSync('artifacts/os-history/dist', 'dist', {recursive: true});\"",
+  "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
     {
