@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm --filter os-history-museum build",
   "outputDirectory": "artifacts/os-history/dist/public",
   "framework": "vite",
