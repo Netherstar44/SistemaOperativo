@@ -3,7 +3,6 @@
   "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "node scripts/vercel-build.cjs",
   "outputDirectory": "artifacts/os-history/dist",
-  "framework": "vite",
   "rewrites": [
     {
       "source": "/(.*)",
