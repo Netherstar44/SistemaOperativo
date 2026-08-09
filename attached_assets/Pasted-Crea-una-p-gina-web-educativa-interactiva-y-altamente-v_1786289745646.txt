@@ -1,0 +1,1052 @@
+Crea una página web educativa, interactiva y altamente visual sobre la historia de los sistemas operativos, con un énfasis especial en la historia y evolución de Linux, pero sin descuidar ni resumir excesivamente la historia de los demás sistemas operativos.
+
+1. CONCEPTO GENERAL
+
+La página debe representar la historia de los sistemas operativos mediante una interfaz visual inspirada en una red neuronal / grafo temporal interactivo.
+
+IMPORTANTE:
+Aunque visualmente parezca una red neuronal, su estructura conceptual principal debe ser una línea del tiempo histórica.
+
+Los acontecimientos deben estar conectados mediante nodos y ramificaciones que representen relaciones históricas, tecnológicas y de influencia entre sistemas operativos.
+
+Ejemplo conceptual:
+
+[Unix] ─────── [MINIX] ─────── [Linux]
+│               │              │
+├── [BSD]       └── [educación] ├── [Ubuntu]
+│                              ├── [Debian]
+│                              ├── [Arch]
+│                              └── [Android]
+│
+├── [macOS]
+│
+└── [otros Unix]
+
+La red NO debe ser simplemente decorativa. Las conexiones deben tener significado y la navegación debe permitir explorar la historia.
+
+---
+
+2. OBJETIVO
+
+Crear una experiencia similar a un museo digital interactivo.
+
+El usuario debe poder:
+
+- Explorar la historia cronológicamente.
+- Hacer zoom y desplazarse por la red temporal.
+- Seleccionar nodos.
+- Ver información detallada de cada acontecimiento.
+- Seguir conexiones entre sistemas.
+- Saltar entre acontecimientos relacionados.
+- Identificar fácilmente la evolución de Linux.
+- Comparar diferentes familias de sistemas operativos.
+- Comprender qué sistemas influyeron en otros.
+- Navegar cómodamente desde celular, tablet y PC.
+
+La experiencia debe sentirse como una combinación de:
+
+- línea del tiempo histórica
+- mapa neuronal
+- árbol genealógico tecnológico
+- museo digital
+- visualización de datos
+- interfaz tecnológica moderna
+
+---
+
+3. CONTENIDO HISTÓRICO
+
+La información debe ser históricamente coherente y suficientemente detallada.
+
+NO conviertas la página en una simple lista de fechas.
+
+Cada acontecimiento debe explicar:
+
+- Año o periodo.
+- Sistema operativo/proyecto.
+- Personas o instituciones relevantes.
+- Contexto histórico.
+- Qué problema intentaba solucionar.
+- Innovaciones técnicas.
+- Arquitectura relevante.
+- Influencia sobre sistemas posteriores.
+- Relación con otros sistemas.
+- Estado o legado actual.
+
+Organiza la historia por grandes épocas.
+
+ÉPOCA 1 — LOS ORÍGENES
+
+Explorar los primeros conceptos de sistemas operativos y sistemas de procesamiento.
+
+Incluir, entre otros:
+
+- procesamiento por lotes
+- sistemas de monitorización
+- primeros sistemas de multiprogramación
+- evolución de los mainframes
+- IBM y sus sistemas
+- OS/360
+- CTSS
+- MULTICS
+
+Explicar cómo surgieron conceptos fundamentales como:
+
+- multitarea
+- multiprogramación
+- memoria virtual
+- usuarios múltiples
+- sistemas de archivos
+
+---
+
+4. UNIX
+
+Dar una sección especialmente importante a UNIX.
+
+Incluir:
+
+- Bell Labs
+- Ken Thompson
+- Dennis Ritchie
+- desarrollo inicial de UNIX
+- lenguaje C
+- filosofía UNIX
+- versiones principales
+- distribución de UNIX
+- BSD
+- System V
+- influencia de UNIX en otros sistemas
+
+Mostrar visualmente cómo UNIX se convierte en uno de los principales "nodos ancestrales" de muchos sistemas posteriores.
+
+---
+
+5. MINIX
+
+Crear una sección específica para MINIX.
+
+Explicar:
+
+- Andrew S. Tanenbaum
+- propósito educativo
+- diseño basado en microkernel
+- influencia educativa
+- relación indirecta con Linux
+
+Mostrar visualmente:
+
+UNIX → MINIX → Linux
+
+pero aclarando históricamente que Linux no es simplemente una continuación de MINIX.
+
+---
+
+6. LINUX — SECCIÓN PRINCIPAL
+
+Linux debe recibir el mayor nivel de detalle de toda la página.
+
+Crear una ruta visual especial denominada:
+
+"LA HISTORIA DE LINUX"
+
+Debe poder recorrerse como una narrativa independiente dentro de la red principal.
+
+Incluir como mínimo:
+
+1991
+
+Linus Torvalds comienza el desarrollo del kernel Linux.
+
+1991
+
+Primer anuncio público.
+
+1992
+
+Licenciamiento GPL.
+
+Década de 1990
+
+Expansión del kernel y adopción por comunidades de software libre.
+
+Debian
+
+Explicar su importancia.
+
+Red Hat
+
+Explicar su importancia comercial y empresarial.
+
+Slackware
+
+Explicar su importancia histórica.
+
+SUSE
+
+Explicar su evolución.
+
+Ubuntu
+
+Explicar:
+
+- aparición
+- relación con Debian
+- facilidad de uso
+- expansión de Linux al escritorio
+
+Android
+
+Explicar que Android utiliza el kernel Linux y mostrar su importancia histórica.
+
+Linux empresarial
+
+Incluir:
+
+- Red Hat Enterprise Linux
+- SUSE Linux Enterprise
+- servidores
+- supercomputación
+- cloud computing
+
+Linux moderno
+
+Explicar:
+
+- kernel Linux
+- GNU/Linux
+- distribuciones
+- contenedores
+- servidores
+- cloud
+- supercomputadores
+- dispositivos embebidos
+- Android
+- infraestructura de Internet
+
+---
+
+7. DISTRIBUCIONES LINUX
+
+Crear una sección visual donde las distribuciones aparezcan como ramas de un árbol.
+
+Incluir como mínimo:
+
+- Debian
+- Ubuntu
+- Linux Mint
+- Arch Linux
+- Manjaro
+- Fedora
+- Red Hat Enterprise Linux
+- CentOS
+- Rocky Linux
+- AlmaLinux
+- openSUSE
+- SUSE Linux Enterprise
+- Slackware
+- Gentoo
+- Kali Linux
+- Raspberry Pi OS
+
+Mostrar relaciones cuando sean históricamente relevantes.
+
+Ejemplo:
+
+Debian
+├── Ubuntu
+│    ├── Linux Mint
+│    └── otros derivados
+│
+Arch
+└── Manjaro
+
+Red Hat
+├── Fedora
+└── RHEL
+
+NO inventar relaciones históricas.
+
+---
+
+8. OTROS SISTEMAS OPERATIVOS
+
+Aunque Linux sea el protagonista, la página debe explicar detalladamente otras familias.
+
+Crear ramas independientes para:
+
+Microsoft
+
+Incluir:
+
+- MS-DOS
+- Windows 1.x
+- Windows 3.x
+- Windows 95
+- Windows 98
+- Windows ME
+- Windows NT
+- Windows 2000
+- Windows XP
+- Windows Vista
+- Windows 7
+- Windows 8
+- Windows 10
+- Windows 11
+
+Explicar la transición entre las ramas DOS/Windows y NT.
+
+---
+
+Apple
+
+Incluir:
+
+- Apple DOS
+- Macintosh System Software
+- Mac OS
+- Mac OS X
+- OS X
+- macOS
+- Darwin
+
+Explicar la relación entre macOS moderno, Darwin y tecnologías derivadas de UNIX/BSD.
+
+---
+
+BSD
+
+Crear una rama propia:
+
+- BSD
+- FreeBSD
+- OpenBSD
+- NetBSD
+- DragonFly BSD
+
+Explicar su relación histórica con UNIX.
+
+---
+
+IBM
+
+Incluir:
+
+- OS/360
+- OS/2
+- AIX
+
+---
+
+Otros sistemas importantes
+
+Incluir cuando sea relevante:
+
+- CP/M
+- AmigaOS
+- BeOS
+- Haiku
+- Plan 9
+- Solaris
+- IRIX
+- HP-UX
+- ChromeOS
+- Android
+- iOS
+
+No presentar todos como equivalentes. Explicar su importancia histórica y tecnológica.
+
+---
+
+9. VISUALIZACIÓN
+
+La interfaz debe tener una estética tecnológica avanzada.
+
+La pantalla principal debe mostrar un gran espacio interactivo donde los nodos estén conectados mediante líneas.
+
+Cada nodo debe representar un acontecimiento, sistema operativo o punto histórico.
+
+Los nodos importantes deben ser visualmente más grandes.
+
+Ejemplo:
+
+     MULTICS
+        │
+        ▼
+      UNIX
+    ╱   │   ╲
+   ╱    │    ╲
+ BSD   MINIX   System V
+        │
+        ▼
+      LINUX
+   ╱    │    ╲
+
+Debian  Android  Red Hat
+│
+Ubuntu
+│
+Linux Mint
+
+Pero visualmente debe parecer una red neuronal moderna y dinámica, NO un diagrama ASCII.
+
+---
+
+10. INTERACCIÓN DE LOS NODOS
+
+Al pasar el mouse:
+
+- aumentar ligeramente el tamaño
+- mostrar halo
+- iluminar conexiones relacionadas
+- mostrar tooltip
+- animar suavemente
+
+Al hacer clic:
+
+- abrir panel lateral o modal
+- mostrar información completa
+- destacar conexiones
+- centrar la cámara en el nodo
+
+Las conexiones relacionadas deben iluminarse progresivamente.
+
+Permitir:
+
+- zoom
+- desplazamiento
+- navegación mediante mouse
+- navegación táctil
+- centrado automático
+- volver al nodo anterior
+- volver al inicio
+
+---
+
+11. ANIMACIONES
+
+Las animaciones deben ser fluidas y profesionales.
+
+Utilizar animaciones como:
+
+- aparición progresiva de nodos
+- líneas que se dibujan
+- partículas recorriendo conexiones
+- pulsos de energía
+- efectos de hover
+- transiciones entre épocas
+- desplazamiento suave
+- zoom suave
+- paneles que aparecen con transición
+- cambios de ambiente visual según la época
+
+IMPORTANTE:
+
+No utilizar animaciones excesivas que reduzcan el rendimiento.
+
+Priorizar:
+
+- transform
+- opacity
+- requestAnimationFrame
+- GPU acceleration cuando sea apropiado
+
+Evitar animaciones pesadas innecesarias.
+
+Respetar:
+
+"prefers-reduced-motion"
+
+Si el usuario tiene las animaciones reducidas activadas, ofrecer una experiencia simplificada.
+
+---
+
+12. ESTÉTICA POR ÉPOCAS
+
+La página debe cambiar sutilmente de estética dependiendo de la época.
+
+1950–1960
+
+Inspiración:
+
+- mainframes
+- computación temprana
+- terminales antiguas
+- tarjetas perforadas
+
+Aspecto:
+
+- oscuro
+- minimalista
+- retro-computacional
+
+1970
+
+Inspiración:
+
+- terminales
+- UNIX
+- Bell Labs
+
+Estética:
+
+- verde fósforo
+- terminales
+- CRT
+
+1980
+
+Inspiración:
+
+- DOS
+- Macintosh
+- Amiga
+- computación personal
+
+Estética:
+
+- retro
+- pixel art sutil
+- interfaces clásicas
+
+1990
+
+Inspiración:
+
+- Windows 95
+- UNIX
+- Linux temprano
+- Internet
+
+Estética:
+
+- interfaces clásicas
+- terminales
+- primeros entornos gráficos
+
+2000
+
+Inspiración:
+
+- Windows XP
+- Mac OS X
+- Linux desktop
+- expansión de Internet
+
+2010
+
+Inspiración:
+
+- smartphones
+- Android
+- cloud
+- GitHub
+- servidores
+
+2020+
+
+Inspiración:
+
+- cloud computing
+- containers
+- Kubernetes
+- inteligencia artificial
+- supercomputación
+- Linux en infraestructura moderna
+
+Los cambios visuales deben ser suaves, no cambiar completamente la interfaz de forma brusca.
+
+---
+
+13. LINUX COMO "CAMINO PRINCIPAL"
+
+Crear un modo especial llamado:
+
+"Ruta Linux"
+
+Cuando se active:
+
+- atenuar ligeramente ramas secundarias
+- destacar la genealogía relacionada con Linux
+- animar el recorrido desde UNIX → MINIX → Linux → distribuciones → Android/servidores/cloud
+- permitir avanzar cronológicamente
+
+Crear una barra de progreso específica para esta ruta.
+
+Ejemplo:
+
+UNIX
+↓
+MINIX
+↓
+Linux 0.x
+↓
+Linux 1.x
+↓
+Linux 2.x
+↓
+Distribuciones
+↓
+Linux empresarial
+↓
+Android
+↓
+Cloud
+↓
+Linux moderno
+
+---
+
+14. NAVEGACIÓN
+
+Crear una barra superior fija y minimalista.
+
+Debe contener:
+
+- Inicio
+- Línea del tiempo
+- Ruta Linux
+- Sistemas
+- Comparar
+- Buscar
+- Acerca de
+
+Crear también un buscador global.
+
+Ejemplo:
+
+Buscar:
+
+"Ubuntu"
+
+y mostrar:
+
+Ubuntu
+→ Debian
+→ Linux
+→ Canonical
+→ 2004
+
+---
+
+15. FILTROS
+
+Permitir filtrar por:
+
+- década
+- familia
+- tipo de sistema
+- arquitectura
+- código abierto / propietario
+- servidor / escritorio / móvil / embebido
+
+Ejemplo:
+
+[Todos]
+
+[UNIX]
+
+[Linux]
+
+[Windows]
+
+[Apple]
+
+[BSD]
+
+[Mainframes]
+
+[Móviles]
+
+---
+
+16. COMPARADOR
+
+Crear una herramienta de comparación.
+
+El usuario puede seleccionar dos sistemas operativos.
+
+Ejemplo:
+
+Linux vs Windows
+
+Mostrar:
+
+- origen
+- año
+- arquitectura
+- licencia
+- kernel
+- interfaz
+- uso principal
+- filosofía
+- influencia
+- legado
+
+Otro ejemplo:
+
+UNIX vs Linux
+
+o:
+
+Linux vs macOS
+
+---
+
+17. PANEL DE INFORMACIÓN
+
+Cada nodo debe abrir un panel con:
+
+Título
+
+Año
+
+Categoría
+
+Descripción
+
+Contexto histórico
+
+Características técnicas
+
+Personajes relevantes
+
+Sistemas relacionados
+
+Influencia
+
+Legado
+
+Fuentes
+
+Crear una pequeña sección:
+
+"¿Por qué importa?"
+
+con una explicación sencilla para estudiantes.
+
+---
+
+18. RESPONSIVE
+
+Debe funcionar correctamente en:
+
+- teléfonos pequeños
+- teléfonos grandes
+- tablets
+- laptops
+- monitores Full HD
+- monitores 2K
+- monitores ultrawide
+
+En móvil NO intentar mantener exactamente la misma visualización de escritorio.
+
+Crear una adaptación específica:
+
+Desktop:
+red neuronal completa.
+
+Tablet:
+red simplificada.
+
+Móvil:
+línea temporal vertical interactiva con conexiones.
+
+La navegación debe funcionar mediante:
+
+- mouse
+- touch
+- teclado
+
+---
+
+19. ACCESIBILIDAD
+
+Implementar:
+
+- navegación mediante teclado
+- focus visible
+- ARIA labels
+- contraste adecuado
+- textos legibles
+- soporte para lectores de pantalla
+- "prefers-reduced-motion"
+- no depender únicamente del color para transmitir información
+
+---
+
+20. COMPATIBILIDAD
+
+La página debe funcionar correctamente en:
+
+- Chrome
+- Firefox
+- Edge
+- Safari
+- navegadores móviles Android
+- Safari iOS
+
+Evitar APIs experimentales innecesarias.
+
+Utilizar fallback cuando una característica no sea compatible.
+
+---
+
+21. TECNOLOGÍA
+
+Si es conveniente utilizar:
+
+- HTML5
+- CSS3
+- JavaScript moderno
+- SVG
+- Canvas
+- WebGL solamente si realmente mejora la experiencia
+
+Puedes utilizar librerías mediante CDN si aportan una ventaja clara.
+
+Librerías posibles:
+
+- D3.js
+- GSAP
+- Three.js
+
+Pero NO utilizar una librería solamente por utilizarla.
+
+Priorizar rendimiento, mantenibilidad y compatibilidad.
+
+---
+
+22. ARQUITECTURA DEL PROYECTO
+
+No crear un único archivo gigante.
+
+Separar correctamente:
+
+/index.html
+
+/css/
+styles.css
+responsive.css
+
+/js/
+app.js
+timeline.js
+nodes.js
+animations.js
+search.js
+comparison.js
+linux-route.js
+data.js
+
+/assets/
+
+La información histórica debe almacenarse en estructuras de datos JavaScript/JSON para que sea fácil agregar nuevos sistemas posteriormente.
+
+---
+
+23. DATOS
+
+Crear una estructura similar a:
+
+{
+id: "linux",
+name: "Linux",
+year: 1991,
+family: "Unix-like",
+type: "kernel",
+importance: "major",
+description: "...",
+influences: ["unix", "minix"],
+descendants: ["debian", "redhat", "android"],
+historicalContext: "...",
+technicalDetails: "...",
+legacy: "..."
+}
+
+No colocar toda la información directamente dentro del HTML.
+
+---
+
+24. RENDIMIENTO
+
+La página debe sentirse fluida incluso en teléfonos de gama media.
+
+Optimizar:
+
+- número de partículas
+- cantidad de elementos DOM
+- renderizado de Canvas/SVG
+- eventos
+- animaciones
+- imágenes
+- fuentes
+- carga inicial
+
+Implementar lazy loading cuando corresponda.
+
+Evitar:
+
+- loops infinitos innecesarios
+- múltiples listeners redundantes
+- efectos de blur excesivos
+- partículas excesivas
+- reflows constantes
+
+Si la red contiene muchos nodos, utilizar técnicas de optimización para mantener un FPS estable.
+
+---
+
+25. EXPERIENCIA DE INTRODUCCIÓN
+
+Crear una pantalla inicial cinematográfica.
+
+Texto:
+
+"LA HISTORIA DE LOS SISTEMAS OPERATIVOS"
+
+Subtítulo:
+
+"De los primeros mainframes al kernel que mueve gran parte del mundo digital."
+
+Debajo:
+
+"Explorar la historia"
+
+Al iniciar:
+
+Una animación muestra cómo aparece una pequeña conexión y progresivamente se transforma en una red completa.
+
+Después comienza la navegación.
+
+---
+
+26. DETALLES VISUALES
+
+Utilizar:
+
+- glassmorphism moderado
+- glow
+- partículas discretas
+- líneas luminosas
+- profundidad
+- gradientes
+- tipografía tecnológica
+
+Pero evitar que parezca una página genérica de "hacker".
+
+Debe parecer una experiencia educativa tecnológica de alta calidad, no un simple template cyberpunk.
+
+---
+
+27. MODO PRESENTACIÓN
+
+Agregar un modo "Presentación".
+
+Al activarlo:
+
+- ocultar elementos innecesarios
+- mostrar un nodo a la vez
+- centrar automáticamente
+- mostrar información resumida
+- permitir avanzar/retroceder con teclado
+- permitir reproducir automáticamente la historia
+
+Atajos:
+
+← anterior
+→ siguiente
+ESC salir
+
+---
+
+28. FUENTES
+
+Agregar referencias históricas confiables.
+
+No inventar datos.
+
+Incluir una sección de fuentes al final de cada acontecimiento importante.
+
+Priorizar:
+
+- documentación oficial
+- archivos históricos
+- universidades
+- proyectos originales
+- documentación de los sistemas
+- artículos históricos reconocidos
+
+---
+
+29. IMPORTANTE SOBRE LA CALIDAD DEL CONTENIDO
+
+No quiero una página que solamente diga:
+
+"Linux apareció en 1991."
+
+Quiero contexto.
+
+Explicar qué estaba ocurriendo en informática en ese momento, qué problemas existían, por qué surgieron los sistemas, cómo se relacionaron entre sí y qué impacto tuvieron posteriormente.
+
+Linux debe ser el protagonista, pero la historia completa debe mostrar que Linux forma parte de una evolución mucho más grande.
+
+---
+
+30. CALIDAD DEL CÓDIGO
+
+El código debe ser:
+
+- limpio
+- modular
+- comentado cuando sea necesario
+- semántico
+- mantenible
+- escalable
+
+No utilizar código duplicado innecesariamente.
+
+No utilizar placeholders como:
+
+"Lorem ipsum"
+
+o:
+
+"Información próximamente."
+
+La página debe funcionar desde la primera ejecución.
+
+---
+
+31. RESULTADO FINAL
+
+Quiero que el resultado se sienta como una experiencia interactiva profesional de divulgación tecnológica.
+
+Debe ser suficientemente impresionante visualmente para demostrar las capacidades de una IA generadora de código, pero al mismo tiempo debe ser funcional y educativo.
+
+La prioridad debe ser:
+
+1. Exactitud histórica
+2. Experiencia de navegación
+3. Historia de Linux
+4. Visualización tipo red neuronal
+5. Animaciones fluidas
+6. Responsive
+7. Accesibilidad
+8. Rendimiento
+9. Calidad del código
+
+Antes de finalizar, prueba que:
+
+- todos los botones funcionen
+- todos los nodos puedan abrirse
+- la búsqueda funcione
+- los filtros funcionen
+- el comparador funcione
+- la Ruta Linux funcione
+- el responsive funcione
+- no existan errores de JavaScript en consola
+- no existan elementos desbordados en móvil
+- las animaciones no degraden significativamente el rendimiento
+
+Entrega el proyecto completamente funcional y listo para ejecutar en Replit.

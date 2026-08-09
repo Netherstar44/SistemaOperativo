@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Historia de los Sistemas Operativos"
+description = "Museo digital interactivo en español que explora la evolución de los sistemas operativos desde los mainframes hasta Linux, Android, la nube y la infraestructura moderna, con una red temporal navegable, filtros, búsqueda, comparación y modo presentación."
+version = "1.0.0"
+id = "artifacts/os-history"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21652
+
+[services.development]
+run = "pnpm --filter @workspace/os-history run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/os-history", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/os-history/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21652"
+BASE_PATH = "/"
