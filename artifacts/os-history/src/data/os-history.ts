@@ -60,7 +60,7 @@ export const historyNodes: HistoryNode[] = [
     people: 'Ken Thompson, Dennis Ritchie, Brian Kernighan y el equipo de Bell Labs.',
     legacy: 'Es el gran ancestro conceptual de BSD, macOS, iOS, Android y la familia GNU/Linux.',
     why: 'Unix no solo entregó un sistema: entregó una forma de construir sistemas, y esa forma sobrevivió a varias generaciones de hardware.',
-    influences: ['multics'], descendants: ['bsd', 'systemv', 'minix', 'plan9'], source: { label: 'Bell Labs — The UNIX History', href: 'https://www.bell-labs.com/usr/dmr/www/chist.html' }, x: 18, y: 50, era: 'unix',
+    influences: ['multics'], descendants: ['bsd', 'systemv', 'minix', 'plan9', 'amigaos', 'beos'], source: { label: 'Bell Labs — The UNIX History', href: 'https://www.bell-labs.com/usr/dmr/www/chist.html' }, x: 18, y: 50, era: 'unix',
     isTrunk: true, themeClass: 'theme-crt-green'
   },
   {
@@ -72,7 +72,7 @@ export const historyNodes: HistoryNode[] = [
     people: 'Bill Joy, Marshall Kirk McKusick y la comunidad de Berkeley.',
     legacy: 'FreeBSD, OpenBSD, NetBSD y Darwin mantienen viva parte de esta línea.',
     why: 'BSD demuestra que una comunidad académica puede convertir un sistema en una plataforma de innovación.',
-    influences: ['unix'], descendants: ['nextstep'], source: { label: 'CSRG Archives — Berkeley Unix', href: 'https://www.usenix.org/legacy/publications/library/proceedings/bsdcon/2002/mckusick.html' }, x: 30, y: 20, era: 'unix',
+    influences: ['unix'], descendants: ['nextstep', 'mac-system1'], source: { label: 'CSRG Archives — Berkeley Unix', href: 'https://www.usenix.org/legacy/publications/library/proceedings/bsdcon/2002/mckusick.html' }, x: 30, y: 20, era: 'unix',
     isTrunk: true, themeClass: 'theme-tux'
   },
   {
@@ -120,7 +120,7 @@ export const historyNodes: HistoryNode[] = [
     people: 'Steve Jobs, Andy Hertzfeld, Bill Atkinson, Susan Kare y el equipo de Macintosh.',
     legacy: 'Definió la metáfora de escritorio que adoptaron casi todos los sistemas operativos comerciales contemporáneos, incluido Windows.',
     why: 'Cambió para siempre el paradigma: el ordenador personal ya no requería memorizar comandos de terminal para ser utilizado.',
-    influences: [], descendants: [], source: { label: 'Folklore.org — Macintosh Development', href: 'https://www.folklore.org' }, x: 42, y: 20, era: 'personal',
+    influences: ['bsd'], descendants: ['nextstep'], source: { label: 'Folklore.org — Macintosh Development', href: 'https://www.folklore.org' }, x: 42, y: 20, era: 'personal',
     isTrunk: true, themeClass: 'theme-mac-mono'
   },
   {
@@ -168,7 +168,7 @@ export const historyNodes: HistoryNode[] = [
     people: 'Linus Torvalds, Andrew S. Tanenbaum, Richard Stallman y miles de mantenedores.',
     legacy: 'Linux mueve servidores, supercomputadores, contenedores, dispositivos embebidos, Android y gran parte de la nube.',
     why: 'Linux importa porque convirtió la colaboración distribuida y el código abierto en una infraestructura confiable a escala planetaria.',
-    influences: ['minix'], descendants: ['debian', 'redhat', 'android', 'cloud'], source: { label: 'Linux Kernel Archives — 30 years', href: 'https://www.kernel.org/' }, x: 60, y: 50, era: 'open',
+    influences: ['minix'], descendants: ['debian', 'redhat', 'android', 'cloud', 'symbian'], source: { label: 'Linux Kernel Archives — 30 years', href: 'https://www.kernel.org/' }, x: 60, y: 50, era: 'open',
     isTrunk: true, themeClass: 'theme-tux'
   },
   {
@@ -240,7 +240,7 @@ export const historyNodes: HistoryNode[] = [
     people: 'Nokia, Ericsson y el consorcio Symbian.',
     legacy: 'Estableció las bases operativas de las redes inalámbricas modernas y fue el objetivo de mercado al que iOS y Android atacaron para redefinir el móvil táctil.',
     why: 'Nos enseña que un sistema operativo puede reinar un mercado por una década y quedar rápidamente obsoleto al no adaptarse a interfaces de usuario capacitivas táctiles.',
-    influences: [], descendants: [], source: { label: 'Symbian OS Foundation Archives', href: 'https://symbianos.org' }, x: 76, y: 66, era: 'open',
+    influences: ['linux'], descendants: [], source: { label: 'Symbian OS Foundation Archives', href: 'https://symbianos.org' }, x: 76, y: 66, era: 'open',
     isTrunk: false, themeClass: 'theme-mobile'
   },
   {
@@ -276,7 +276,7 @@ export const historyNodes: HistoryNode[] = [
     people: 'Jay Miner, RJ Mical, Dave Needle y el equipo de Amiga.',
     legacy: 'Su arquitectura inspiró a comunidades de usuarios y proyectos posteriores como MorphOS y AROS; no fue una rama de Unix ni de Linux.',
     why: 'AmigaOS recuerda que la historia también avanza por experiencias alternativas, no solo por las plataformas que dominaron el mercado.',
-    influences: [], descendants: [], source: { label: 'AmigaOS Documentation Wiki', href: 'https://wiki.amigaos.net/wiki/Main_Page' }, x: 46, y: 92, era: 'personal',
+    influences: ['unix'], descendants: [], source: { label: 'AmigaOS Documentation Wiki', href: 'https://wiki.amigaos.net/wiki/Main_Page' }, x: 46, y: 92, era: 'personal',
     isTrunk: false, themeClass: 'theme-mac-mono'
   },
   {
@@ -288,7 +288,7 @@ export const historyNodes: HistoryNode[] = [
     people: 'Jean-Louis Gassée y el equipo de Be Inc.',
     legacy: 'Haiku mantiene una implementación compatible en espíritu y API; BeOS no es un ancestro directo de macOS o Linux.',
     why: 'Un sistema puede ser influyente por sus ideas incluso cuando no se convierte en una plataforma masiva.',
-    influences: [], descendants: [], source: { label: 'Haiku Project — History', href: 'https://www.haiku-os.org/about/haiku/' }, x: 72, y: 92, era: 'open',
+    influences: ['unix'], descendants: [], source: { label: 'Haiku Project — History', href: 'https://www.haiku-os.org/about/haiku/' }, x: 72, y: 92, era: 'open',
     isTrunk: false, themeClass: 'theme-aqua'
   },
   {

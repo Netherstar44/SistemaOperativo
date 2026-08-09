@@ -370,27 +370,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .map-era-band { position: absolute; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; border-left: 1px dashed hsl(var(--border) / .15); padding: 0 0 8px 7px; color: hsl(var(--muted-foreground) / .5); font: 600 .5rem var(--app-font-mono); letter-spacing: .07em; text-transform: uppercase; pointer-events: none; }
 .map-era-band span { background: none; writing-mode: horizontal-tb; }
 
-/* Split Layout for Timeline + Station View */
+/* Timeline layout — always full width, no split */
 .map-split-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  transition: all 0.35s ease;
+  display: block;
 }
-
-@media (min-width: 1100px) {
-  .map-split-layout.has-station-open {
-    display: grid;
-    grid-template-columns: 1fr 450px;
-    align-items: start;
-  }
-}
-
-.station-right-panel {
-  position: relative;
-  z-index: 10;
+.map-left-col {
   width: 100%;
 }
+
+/* Station panel — fixed overlay from right, never affects map layout */
+.station-right-panel {
+  position: fixed;
+  top: 72px; /* below topbar */
+  right: 0;
+  bottom: 0;
+  width: min(460px, 100vw);
+  z-index: 50;
+  overflow-y: auto;
+  box-shadow: -8px 0 40px hsl(225 40% 2% / .6);
+}
+
 
 .station-right-panel .theme-styled-window {
   border: 1px solid hsl(var(--border));
