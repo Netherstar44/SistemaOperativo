@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, ChevronRight, CircleHelp, GitBranch, Layers3, Menu, MonitorPlay, Network, Search, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, ChevronRight, CircleHelp, GitBranch, Layers3, Menu, MonitorPlay, Search, X } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { connections, families, historyNodes, routeLinuxIds, type HistoryNode, bibliographicReferences, type Reference } from '@/data/os-history';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,7 +10,9 @@ const nodeMap = Object.fromEntries(historyNodes.map((node) => [node.id, node])) 
 
 function Logo() {
   return <Link href="/" className="brand-mark" data-testid="link-home">
-    <span className="brand-symbol"><Network size={15} /></span>
+    <span className="brand-symbol" style={{ border: 'none', background: 'none', overflow: 'hidden', borderRadius: '6px' }}>
+      <img src="/logo.png" alt="Línea del Tiempo Digital logo" style={{ width: '28px', height: '28px', objectFit: 'contain', display: 'block' }} />
+    </span>
     <span className="brand-copy"><strong>LÍNEA DEL TIEMPO</strong><span>Sistemas Operativos</span></span>
   </Link>;
 }
@@ -1210,7 +1212,7 @@ function Landing({ onNode, onSearch, onPresent, onRoute }: { onNode: (node: Hist
     <footer className="site-footer">
       <div className="site-footer-inner">
         <div className="site-footer-brand">
-          <Network size={14} />
+          <img src="/logo.png" alt="" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
           <span><strong>Línea del Tiempo Digital</strong> · Sistemas Operativos</span>
         </div>
         <div className="site-footer-credits">
