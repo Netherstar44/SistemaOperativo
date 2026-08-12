@@ -5,23 +5,24 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-const currentDir = typeof __dirname !== 'undefined' 
-  ? __dirname 
-  : (import.meta && import.meta.url) 
-    ? path.dirname(fileURLToPath(import.meta.url)) 
-    : path.resolve(process.cwd(), 'artifacts/os-history');
+// Safely derive current directory avoiding double-nesting in monorepos
+const cwd = process.cwd();
+const currentDir = (cwd.endsWith('os-history') || cwd.endsWith('os-history/'))
+  ? cwd
+  : path.resolve(cwd, 'artifacts/os-history');
 
 function vercelEntrypointPlugin() {
   return {
     name: 'vercel-entrypoint-plugin',
     closeBundle() {
+      const rootDir = cwd.endsWith('os-history') ? path.resolve(cwd, '../..') : cwd;
+      
       const targetDirs = [
         path.resolve(currentDir, 'dist'),
-        path.resolve(process.cwd(), 'dist'),
-        path.resolve(process.cwd(), 'artifacts/os-history/dist')
+        path.resolve(rootDir, 'dist'),
+        path.resolve(rootDir, 'artifacts/os-history/dist')
       ];
 
-      // ESM code for index.js & index.mjs (since os-history package.json is "type": "module")
       const esmServerCode = `import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -64,7 +65,6 @@ export default function handler(req, res) {
 }
 `;
 
-      // CJS code for index.cjs
       const cjsServerCode = `const fs = require('fs');
 const path = require('path');
 
@@ -111,6 +111,12 @@ module.exports = (req, res) => {
           fs.writeFileSync(path.join(dir, 'index.js'), esmServerCode);
           fs.writeFileSync(path.join(dir, 'index.mjs'), esmServerCode);
           fs.writeFileSync(path.join(dir, 'index.cjs'), cjsServerCode);
+          fs.writeFileSync(path.join(dir, 'app.js'), esmServerCode);
+          fs.writeFileSync(path.join(dir, 'app.mjs'), esmServerCode);
+          fs.writeFileSync(path.join(dir, 'app.cjs'), cjsServerCode);
+          fs.writeFileSync(path.join(dir, 'server.js'), esmServerCode);
+          fs.writeFileSync(path.join(dir, 'server.mjs'), esmServerCode);
+          fs.writeFileSync(path.join(dir, 'server.cjs'), cjsServerCode);
         } catch (e) {
           // ignore write errors
         }

@@ -5,7 +5,7 @@
   "scripts": {
     "preinstall": "node -e \"const fs = require('fs'); ['package-lock.json', 'yarn.lock'].forEach(f => fs.existsSync(f) && fs.unlinkSync(f)); if (!/pnpm/.test(process.env.npm_config_user_agent || '')) { console.error('\\n========================================================\\n[ERROR] Este proyecto usa pnpm workspaces (catalogos y rutas locales).\\nPor favor, ejecuta: pnpm install\\n========================================================\\n'); process.exit(1); }\"",
     "dev": "pnpm --filter os-history-museum dev",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build && node -e \"const fs=require('fs'),path=require('path'); const src=path.join(process.cwd(),'artifacts/os-history/dist'); if(fs.existsSync(src)){ ['dist','dist/public'].forEach(d=>{ const target=path.join(process.cwd(),d); if(target!==src){ fs.mkdirSync(target,{recursive:true}); fs.cpSync(src,target,{recursive:true}); } }); console.log('[postbuild] Synced build artifacts across all target folders.'); }\"",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build && node -e \"const fs=require('fs'),path=require('path'); const cwd=process.cwd(); const root=cwd.endsWith('os-history')?path.resolve(cwd,'../..'):cwd; const src=path.resolve(root,'artifacts/os-history/dist'); if(fs.existsSync(src)){ [path.resolve(root,'dist'),path.resolve(root,'dist/public')].forEach(target=>{ fs.mkdirSync(target,{recursive:true}); fs.cpSync(src,target,{recursive:true}); }); console.log('[postbuild] Synced build artifacts successfully.'); }\"",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
