@@ -1,0 +1,12 @@
+# Ignore all build artifacts except the Vercel entrypoint stubs
+*
+!.gitignore
+!index.js
+!index.mjs
+!index.cjs
+!app.js
+!app.mjs
+!app.cjs
+!server.js
+!server.mjs
+!server.cjs
