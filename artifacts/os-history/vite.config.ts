@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-// Safely derive current directory in ESM across all Node versions
 const currentDir = typeof __dirname !== 'undefined' 
   ? __dirname 
   : (import.meta && import.meta.url) 
@@ -22,7 +21,51 @@ function vercelEntrypointPlugin() {
         path.resolve(process.cwd(), 'artifacts/os-history/dist')
       ];
 
-      const serverCode = `const fs = require('fs');
+      // ESM code for index.js & index.mjs (since os-history package.json is "type": "module")
+      const esmServerCode = `import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default function handler(req, res) {
+  const url = (req.url || '/').split('?')[0];
+  let filePath = path.join(__dirname, url === '/' ? 'index.html' : url);
+
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    filePath = path.join(__dirname, 'index.html');
+  }
+
+  const ext = path.extname(filePath);
+  const contentTypes = {
+    '.html': 'text/html; charset=utf-8',
+    '.js': 'application/javascript; charset=utf-8',
+    '.css': 'text/css; charset=utf-8',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.svg': 'image/svg+xml',
+    '.ico': 'image/x-icon',
+    '.webp': 'image/webp'
+  };
+
+  try {
+    const data = fs.readFileSync(filePath);
+    res.setHeader('Content-Type', contentTypes[ext] || 'application/octet-stream');
+    res.statusCode = 200;
+    res.end(data);
+  } catch (err) {
+    const html = fs.readFileSync(path.join(__dirname, 'index.html'));
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.statusCode = 200;
+    res.end(html);
+  }
+}
+`;
+
+      // CJS code for index.cjs
+      const cjsServerCode = `const fs = require('fs');
 const path = require('path');
 
 module.exports = (req, res) => {
@@ -65,9 +108,11 @@ module.exports = (req, res) => {
           if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
           }
-          fs.writeFileSync(path.join(dir, 'index.js'), serverCode);
+          fs.writeFileSync(path.join(dir, 'index.js'), esmServerCode);
+          fs.writeFileSync(path.join(dir, 'index.mjs'), esmServerCode);
+          fs.writeFileSync(path.join(dir, 'index.cjs'), cjsServerCode);
         } catch (e) {
-          // ignore copy errors
+          // ignore write errors
         }
       });
     }
