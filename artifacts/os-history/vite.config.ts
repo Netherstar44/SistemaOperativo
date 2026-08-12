@@ -1,16 +1,27 @@
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
+
+// Safely derive current directory in ESM across all Node versions
+const currentDir = typeof __dirname !== 'undefined' 
+  ? __dirname 
+  : (import.meta && import.meta.url) 
+    ? path.dirname(fileURLToPath(import.meta.url)) 
+    : path.resolve(process.cwd(), 'artifacts/os-history');
 
 function vercelEntrypointPlugin() {
   return {
     name: 'vercel-entrypoint-plugin',
     closeBundle() {
-      const distPath = path.resolve(import.meta.dirname, 'dist');
-      const entryPath = path.join(distPath, 'index.js');
-      
+      const targetDirs = [
+        path.resolve(currentDir, 'dist'),
+        path.resolve(process.cwd(), 'dist'),
+        path.resolve(process.cwd(), 'artifacts/os-history/dist')
+      ];
+
       const serverCode = `const fs = require('fs');
 const path = require('path');
 
@@ -48,7 +59,17 @@ module.exports = (req, res) => {
   }
 };
 `;
-      fs.writeFileSync(entryPath, serverCode);
+
+      targetDirs.forEach(dir => {
+        try {
+          if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+          }
+          fs.writeFileSync(path.join(dir, 'index.js'), serverCode);
+        } catch (e) {
+          // ignore copy errors
+        }
+      });
     }
   };
 }
@@ -62,13 +83,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(import.meta.dirname, 'src'),
+      '@': path.resolve(currentDir, 'src'),
     },
     dedupe: ['react', 'react-dom'],
   },
-  root: path.resolve(import.meta.dirname),
+  root: currentDir,
   build: {
-    outDir: path.resolve(import.meta.dirname, 'dist'),
+    outDir: path.resolve(currentDir, 'dist'),
     emptyOutDir: true,
     chunkSizeWarningLimit: 1500,
   },
