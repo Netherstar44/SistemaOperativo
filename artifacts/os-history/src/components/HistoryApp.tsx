@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState, memo, type CSSProperties } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, ChevronRight, CircleHelp, GitBranch, Layers3, Menu, MonitorPlay, Search, X } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { connections, families, historyNodes, routeLinuxIds, type HistoryNode, bibliographicReferences, type Reference } from '@/data/os-history';
@@ -61,10 +61,24 @@ function SearchOverlay({ open, onClose, onSelect }: { open: boolean; onClose: ()
     const key = (event: KeyboardEvent) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); onClose(); } if (event.key === 'Escape' && open) onClose(); };
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [onClose, open]);
+
+  const handleSelect = (node: HistoryNode) => {
+    onSelect(node);
+    onClose();
+    // Scroll the map node into view after a short delay for the panel to render
+    setTimeout(() => {
+      const el = document.getElementById(`map-node-${node.id}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        el.focus();
+      }
+    }, 120);
+  };
+
   return <div className={`search-overlay ${open ? 'is-open' : ''}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }} role="dialog" aria-modal="true" aria-label="Buscar en la historia">
     <div className="search-dialog">
       <div className="search-input-wrap"><Search size={18} /><input ref={inputRef} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Busca un sistema, una persona o una década…" className="search-input" data-testid="input-global-search" /><button className="icon-button" onClick={onClose} aria-label="Cerrar búsqueda" data-testid="button-close-search"><X size={16} /></button></div>
-      <div className="search-results">{results.length ? results.map((node) => <button className="search-result" key={node.id} onClick={() => { onSelect(node); onClose(); }} data-testid={`search-result-${node.id}`}><span className="search-result-year">{node.year}</span><span><strong>{node.name}</strong><span>{node.tagline}</span></span><ChevronRight size={15} color="hsl(var(--muted-foreground))" /></button>) : <div className="empty-search">No encontramos un nodo con esa búsqueda. Prueba con «Unix», «móvil» o «1991».</div>}</div>
+      <div className="search-results">{results.length ? results.map((node) => <button className="search-result" key={node.id} onClick={() => handleSelect(node)} data-testid={`search-result-${node.id}`}><span className="search-result-year">{node.year}</span><span><strong>{node.name}</strong><span>{node.tagline}</span></span><ChevronRight size={15} color="hsl(var(--muted-foreground))" /></button>) : <div className="empty-search">No encontramos un nodo con esa búsqueda. Prueba con «Unix», «móvil» o «1991».</div>}</div>
     </div>
   </div>;
 }
@@ -107,7 +121,8 @@ function ReferencesOverlay({ open, onClose }: { open: boolean; onClose: () => vo
   </div>;
 }
 
-function StationMathCanvas({ nodeId, themeClass, color, height = 130 }: { nodeId: string; themeClass: string; color: string; height?: number }) {
+// Memoized to avoid re-rendering on every parent state change
+const StationMathCanvas = memo(function StationMathCanvas({ nodeId, themeClass, color, height = 130 }: { nodeId: string; themeClass: string; color: string; height?: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -617,7 +632,7 @@ function StationMathCanvas({ nodeId, themeClass, color, height = 130 }: { nodeId
       <span className="station-math-badge">⚙ Animación alusiva / {nodeId.toUpperCase()}</span>
     </div>
   );
-}
+});
 
 function StationDisplay({
   node,
@@ -980,6 +995,7 @@ function TimelineMap({ activeFamily, onNode, selected, routeMode, onlyTrunk = tr
                     '--node-color': node.color,
                     '--node-size': node.size === 'major' ? '46px' : '32px'
                   } as CSSProperties}
+                  id={`map-node-${node.id}`}
                   onClick={() => onNode(node)}
                   aria-label={`Abrir detalles de ${node.name}`}
                   data-testid={`map-node-${node.id}`}
@@ -1273,6 +1289,151 @@ function Landing({ onNode, onSearch, onPresent, onRoute }: { onNode: (node: Hist
   </main></>;
 }
 
+// ── Animated Tux Penguin (Canvas 2D) ────────────────────────────────────────
+function TuxPenguin() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    let animId: number;
+    let t = 0;
+    const draw = () => {
+      const w = canvas.width = canvas.offsetWidth;
+      const h = canvas.height = canvas.offsetHeight;
+      ctx.clearRect(0, 0, w, h);
+      const cx = w / 2, cy = h / 2 + Math.sin(t * 1.2) * 4;
+      const scale = Math.min(w, h) / 160;
+
+      // Body (black oval)
+      ctx.fillStyle = '#1a1a1a';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy + 20 * scale, 38 * scale, 52 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Belly (white oval)
+      ctx.fillStyle = '#f0f0f0';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy + 28 * scale, 24 * scale, 36 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Head (black circle)
+      ctx.fillStyle = '#1a1a1a';
+      ctx.beginPath();
+      ctx.arc(cx, cy - 24 * scale, 26 * scale, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Face (white oval)
+      ctx.fillStyle = '#f0f0f0';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy - 20 * scale, 16 * scale, 18 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eyes
+      const blinkOpen = (t % 4) > 0.15;
+      const eyeY = cy - 26 * scale;
+      ctx.fillStyle = '#1a1a1a';
+      if (blinkOpen) {
+        ctx.beginPath(); ctx.arc(cx - 9 * scale, eyeY, 4.5 * scale, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx + 9 * scale, eyeY, 4.5 * scale, 0, Math.PI * 2); ctx.fill();
+        // Pupils
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(cx - 8 * scale, eyeY - 1 * scale, 1.8 * scale, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx + 10 * scale, eyeY - 1 * scale, 1.8 * scale, 0, Math.PI * 2); ctx.fill();
+      } else {
+        // Closed eyes
+        ctx.lineWidth = 2 * scale;
+        ctx.strokeStyle = '#1a1a1a';
+        ctx.beginPath(); ctx.arc(cx - 9 * scale, eyeY, 4 * scale, Math.PI, 0); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx + 9 * scale, eyeY, 4 * scale, Math.PI, 0); ctx.stroke();
+      }
+
+      // Beak
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 15 * scale);
+      ctx.lineTo(cx - 8 * scale, cy - 8 * scale);
+      ctx.lineTo(cx + 8 * scale, cy - 8 * scale);
+      ctx.closePath();
+      ctx.fill();
+
+      // Wings (flapping)
+      const flapAngle = Math.sin(t * 3) * 0.3;
+      // Left wing
+      ctx.save();
+      ctx.translate(cx - 32 * scale, cy + 5 * scale);
+      ctx.rotate(-flapAngle - 0.2);
+      ctx.fillStyle = '#1a1a1a';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 14 * scale, 32 * scale, -0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      // Right wing
+      ctx.save();
+      ctx.translate(cx + 32 * scale, cy + 5 * scale);
+      ctx.rotate(flapAngle + 0.2);
+      ctx.fillStyle = '#1a1a1a';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 14 * scale, 32 * scale, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Feet
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.ellipse(cx - 14 * scale, cy + 68 * scale + Math.abs(Math.sin(t * 2)) * 2 * scale, 10 * scale, 5 * scale, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(cx + 14 * scale, cy + 68 * scale + Math.abs(Math.cos(t * 2)) * 2 * scale, 10 * scale, 5 * scale, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Scarf (Linux red)
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy - 2 * scale + Math.sin(t * 1.2) * 2, 28 * scale, 7 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Scarf knot tail
+      ctx.beginPath();
+      ctx.moveTo(cx + 10 * scale, cy + 2 * scale);
+      ctx.lineTo(cx + 22 * scale, cy + 22 * scale + Math.sin(t * 2) * 4 * scale);
+      ctx.lineTo(cx + 14 * scale, cy + 20 * scale + Math.sin(t * 2) * 4 * scale);
+      ctx.closePath();
+      ctx.fill();
+
+      // Propeller hat
+      ctx.fillStyle = '#3b82f6';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy - 50 * scale, 20 * scale, 5 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      const propT = t * 4;
+      for (let b = 0; b < 3; b++) {
+        const ba = propT + (b * Math.PI * 2) / 3;
+        ctx.save();
+        ctx.translate(cx, cy - 54 * scale);
+        ctx.rotate(ba);
+        ctx.fillStyle = `hsl(${(b * 120 + t * 60) % 360}, 80%, 60%)`;
+        ctx.beginPath();
+        ctx.ellipse(12 * scale, 0, 12 * scale, 5 * scale, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      t += 0.035;
+      animId = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => cancelAnimationFrame(animId);
+  }, []);
+
+  return (
+    <div className="tux-penguin-wrap" aria-hidden="true">
+      <canvas ref={canvasRef} className="tux-penguin-canvas" />
+      <div className="tux-penguin-label">🐧 Tux, mascota de Linux</div>
+    </div>
+  );
+}
+
 function LinuxRoute({ onNode, onPresent }: { onNode: (node: HistoryNode) => void; onPresent: () => void }) {
   const [index, setIndex] = useState(0);
   const current = nodeMap[routeLinuxIds[index]];
@@ -1288,6 +1449,9 @@ function LinuxRoute({ onNode, onPresent }: { onNode: (node: HistoryNode) => void
       {currentTheme === 'theme-crt-green' && <div className="crt-scanlines"></div>}
       {currentTheme === 'theme-win95' && <div className="win95-desktop-bg"></div>}
     </div>
+
+    {/* Floating Tux Penguin — desktop only */}
+    <TuxPenguin />
     
     <section className="route-intro">
       <div className="eyebrow" style={{ color: 'hsl(var(--accent))' }}>Ruta Linux / recorrido guiado</div>
@@ -1335,12 +1499,13 @@ function LinuxRoute({ onNode, onPresent }: { onNode: (node: HistoryNode) => void
           )}
           <div className="theme-styled-body">
             <div className="route-story-year">{current?.year}</div>
-            <StationMathCanvas nodeId={current?.id || 'linux'} themeClass={currentTheme} color={current?.color || '#f4bf5f'} height={135} />
+            <StationMathCanvas nodeId={current?.id || 'linux'} themeClass={currentTheme} color={current?.color || '#f4bf5f'} height={120} />
             <div className="story-content-grid">
               <div>
                 <div className="eyebrow station-eyebrow" style={{ '--eyebrow-color': current?.color } as CSSProperties}>{current?.family} / {current?.type}</div>
                 <h2>{current?.name}: {current?.tagline}</h2>
                 <p className="description-text">{current?.description}</p>
+                <cite className="info-citation">{current?.citation}</cite>
                 
                 <div className="theme-visual-cue">
                   <span className="cue-icon">✦</span>
@@ -1357,6 +1522,7 @@ function LinuxRoute({ onNode, onPresent }: { onNode: (node: HistoryNode) => void
                 <p>{current?.context}</p>
                 <strong style={{ marginTop: '1.1rem' }}>Legado técnico</strong>
                 <p>{current?.legacy}</p>
+                <cite className="info-citation" style={{ marginTop: '.5rem' }}>{current?.citation}</cite>
               </aside>
             </div>
           </div>
@@ -1457,6 +1623,90 @@ function Presentation({ onClose, nodes, mode }: { onClose: () => void; nodes: Hi
   </div>;
 }
 
+// ── Simon's Secret Page ──────────────────────────────────────────────────────
+function SimonPage() {
+  const [, setLocation] = useLocation();
+  const [shake, setShake] = useState(false);
+  const triggerShake = () => { setShake(true); setTimeout(() => setShake(false), 600); };
+
+  return (
+    <div className="simon-page">
+      <div className="simon-bg-stars" aria-hidden="true">
+        {Array.from({ length: 30 }).map((_, i) => (
+          <span key={i} className="simon-star" style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+            fontSize: `${8 + Math.random() * 14}px`
+          }}>{'*★✦♥⭐'[Math.floor(Math.random() * 5)]}</span>
+        ))}
+      </div>
+
+      <div className="simon-content">
+        <div className="simon-header">
+          <div className="simon-crown">👑 ZONA SECRETA 👑</div>
+          <h1 className="simon-title">
+            <span>¡El</span> genio del
+            <span> ICFES</span>
+          </h1>
+          <p className="simon-sub">Has encontrado la página secreta del más cráck de toda Neiva</p>
+        </div>
+
+        <div className={`simon-frame-wrap ${shake ? 'is-shaking' : ''}`} onClick={triggerShake}>
+          <div className="simon-neon-frame">
+            <img
+              src="/simon67.jpg"
+              alt="Simón Santiago Puentes - 472 ICFES"
+              className="simon-photo"
+              loading="lazy"
+            />
+          </div>
+          <div className="simon-score-badge">472 🧠</div>
+        </div>
+
+        <div className="simon-facts">
+          <div className="simon-fact">
+            <span className="simon-fact-icon">💻</span>
+            <span>Hizo una app de la historia de los Sistemas Operativos</span>
+          </div>
+          <div className="simon-fact">
+            <span className="simon-fact-icon">🏆</span>
+            <span>Puntaje ICFES: <strong>472</strong> puntos — nivel máximo activado</span>
+          </div>
+          <div className="simon-fact">
+            <span className="simon-fact-icon">🚀</span>
+            <span>Joven de Neiva que programó mientras todos dormían</span>
+          </div>
+          <div className="simon-fact">
+            <span className="simon-fact-icon">🐧</span>
+            <span>Encontró este Easter Egg — eres de los especiales</span>
+          </div>
+        </div>
+
+        <div className="simon-footer-btns">
+          <button
+            className="primary-button"
+            onClick={() => setLocation('/')}
+          >
+            ← Volver al museo
+          </button>
+          <button
+            className="ghost-button"
+            onClick={triggerShake}
+          >
+            💥 Aplaudir al genio
+          </button>
+        </div>
+
+        <p className="simon-secret-note">
+          🤫 Esta página sólo existe para quienes saben buscar.
+          <br />URL: <code>/simon67</code> — ¡no la compartas! (o sí, da igual)
+        </p>
+      </div>
+    </div>
+  );
+}
+
 const trunkNodes = historyNodes.filter((n) => n.isTrunk);
 
 export function HistoryApp() {
@@ -1466,12 +1716,15 @@ export function HistoryApp() {
   const [presentation, setPresentation] = useState<PresentMode | null>(null);
   const [referencesOpen, setReferencesOpen] = useState(false);
   const view: View = location === '/ruta-linux' ? 'route' : location === '/comparar' ? 'compare' : 'timeline';
+  const isSimon = location === '/simon67';
   
   useEffect(() => { const key = (event: KeyboardEvent) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setSearchOpen(true); } }; window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key); }, []);
   
   const selectNode = (node: HistoryNode) => { setDetail(node); if (view !== 'timeline') setLocation('/'); };
   const presentNodes = presentation === 'trunk' ? trunkNodes : historyNodes;
   
+  if (isSimon) return <SimonPage />;
+
   return <div className="museum-app">
     <Topbar view={view} onSearch={() => setSearchOpen(true)} onPresentAll={() => setPresentation('all')} onPresentTrunk={() => setPresentation('trunk')} onOpenReferences={() => setReferencesOpen(true)} />
     {view === 'timeline' && <Landing onNode={selectNode} onSearch={() => setSearchOpen(true)} onPresent={() => setPresentation('all')} onRoute={() => setLocation('/ruta-linux')} />}

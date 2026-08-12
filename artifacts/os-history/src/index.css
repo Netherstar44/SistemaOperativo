@@ -1490,3 +1490,228 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 640px) {
   .site-footer-inner { flex-direction: column; align-items: flex-start; gap: .75rem; }
 }
+
+/* ── Tux Penguin 3D Canvas (Linux Route) ─────────────────────────────────── */
+.tux-penguin-wrap {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  width: 160px;
+  height: 200px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  background: hsl(228 27% 6% / .75);
+  border: 1px solid hsl(var(--accent) / .3);
+  border-radius: .8rem;
+  padding: .5rem;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px hsl(var(--accent) / .1);
+}
+.tux-penguin-canvas {
+  width: 100%;
+  height: 160px;
+  display: block;
+}
+.tux-penguin-label {
+  font: 600 .58rem var(--app-font-mono);
+  color: hsl(var(--accent));
+  text-align: center;
+  margin-top: .2rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+@media (max-width: 1100px) {
+  .tux-penguin-wrap { display: none; }
+}
+
+/* ── Simon's Secret Easter Egg Page (/simon67) ───────────────────────────── */
+.simon-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #0f172a 60%, #020617 100%);
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Space Grotesk', var(--app-font-sans), sans-serif;
+}
+.simon-bg-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.simon-star {
+  position: absolute;
+  color: hsl(var(--accent));
+  opacity: .7;
+  animation: simon-twinkle 2.5s infinite alternate ease-in-out;
+}
+@keyframes simon-twinkle {
+  0% { transform: scale(0.6) rotate(0deg); opacity: .3; }
+  100% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+}
+
+.simon-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.simon-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+}
+.simon-crown {
+  font: 700 .75rem var(--app-font-mono);
+  color: #f59e0b;
+  letter-spacing: .18em;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: .3rem .9rem;
+  border-radius: 2rem;
+}
+.simon-title {
+  font: 800 clamp(2.2rem, 6vw, 3.8rem)/1.05 'Space Grotesk', sans-serif;
+  margin: .3rem 0;
+  letter-spacing: -.03em;
+}
+.simon-title span {
+  background: linear-gradient(135deg, #a855f7, #ec4899, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.simon-sub {
+  color: #94a3b8;
+  font-size: .95rem;
+  max-width: 480px;
+  margin: 0;
+}
+
+/* Neon Photo Frame */
+.simon-frame-wrap {
+  position: relative;
+  cursor: pointer;
+  margin: .5rem 0;
+  transition: transform .2s ease;
+}
+.simon-frame-wrap:hover {
+  transform: scale(1.03);
+}
+.simon-frame-wrap.is-shaking {
+  animation: simon-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes simon-shake {
+  10%, 90% { transform: translate3d(-2px, 0, 0) rotate(-1deg); }
+  20%, 80% { transform: translate3d(4px, 0, 0) rotate(2deg); }
+  30%, 50%, 70% { transform: translate3d(-6px, 0, 0) rotate(-2deg); }
+  40%, 60% { transform: translate3d(6px, 0, 0) rotate(1deg); }
+}
+
+.simon-neon-frame {
+  position: relative;
+  padding: 8px;
+  border-radius: 1.2rem;
+  background: linear-gradient(45deg, #ff007f, #00f0ff, #7000ff, #ff007f);
+  background-size: 300% 300%;
+  animation: simon-neon-glow 4s ease infinite;
+  box-shadow: 0 0 25px rgba(255, 0, 127, 0.5), 0 0 50px rgba(0, 240, 255, 0.3);
+}
+@keyframes simon-neon-glow {
+  0% { background-position: 0% 50%; box-shadow: 0 0 25px rgba(255, 0, 127, 0.6), 0 0 50px rgba(0, 240, 255, 0.4); }
+  50% { background-position: 100% 50%; box-shadow: 0 0 35px rgba(0, 240, 255, 0.7), 0 0 60px rgba(112, 0, 255, 0.5); }
+  100% { background-position: 0% 50%; box-shadow: 0 0 25px rgba(255, 0, 127, 0.6), 0 0 50px rgba(0, 240, 255, 0.4); }
+}
+
+.simon-photo {
+  display: block;
+  width: min(380px, 85vw);
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: .9rem;
+  border: 2px solid #0f172a;
+}
+
+.simon-score-badge {
+  position: absolute;
+  bottom: -12px;
+  right: -12px;
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  color: #ffffff;
+  font: 800 1.2rem 'Space Grotesk', sans-serif;
+  padding: .4rem 1rem;
+  border-radius: 2rem;
+  border: 3px solid #0f172a;
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5);
+  animation: simon-bounce 2s infinite ease-in-out;
+}
+@keyframes simon-bounce {
+  0%, 100% { transform: translateY(0) rotate(3deg); }
+  50% { transform: translateY(-6px) rotate(-2deg); }
+}
+
+/* Fact Cards */
+.simon-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem;
+  width: 100%;
+  text-align: left;
+}
+@media (max-width: 640px) {
+  .simon-facts { grid-template-columns: 1fr; }
+}
+.simon-fact {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  padding: .85rem 1rem;
+  border-radius: .7rem;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  font-size: .8rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+  backdrop-filter: blur(6px);
+}
+.simon-fact-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.simon-fact strong {
+  color: #f59e0b;
+}
+
+.simon-footer-btns {
+  display: flex;
+  gap: .8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: .5rem;
+}
+.simon-secret-note {
+  font: .7rem var(--app-font-mono);
+  color: #64748b;
+  margin-top: .5rem;
+}
+.simon-secret-note code {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  padding: .15rem .4rem;
+  border-radius: .2rem;
+}
