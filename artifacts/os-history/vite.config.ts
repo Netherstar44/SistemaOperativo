@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-// Safely derive current directory avoiding double-nesting in monorepos
 const cwd = process.cwd();
 const currentDir = (cwd.endsWith('os-history') || cwd.endsWith('os-history/'))
   ? cwd
@@ -14,15 +13,7 @@ const currentDir = (cwd.endsWith('os-history') || cwd.endsWith('os-history/'))
 function vercelEntrypointPlugin() {
   return {
     name: 'vercel-entrypoint-plugin',
-    closeBundle() {
-      const rootDir = cwd.endsWith('os-history') ? path.resolve(cwd, '../..') : cwd;
-      
-      const targetDirs = [
-        path.resolve(currentDir, 'dist'),
-        path.resolve(rootDir, 'dist'),
-        path.resolve(rootDir, 'artifacts/os-history/dist')
-      ];
-
+    generateBundle() {
       const esmServerCode = `import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -103,23 +94,20 @@ module.exports = (req, res) => {
 };
 `;
 
-      targetDirs.forEach(dir => {
-        try {
-          if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-          }
-          fs.writeFileSync(path.join(dir, 'index.js'), esmServerCode);
-          fs.writeFileSync(path.join(dir, 'index.mjs'), esmServerCode);
-          fs.writeFileSync(path.join(dir, 'index.cjs'), cjsServerCode);
-          fs.writeFileSync(path.join(dir, 'app.js'), esmServerCode);
-          fs.writeFileSync(path.join(dir, 'app.mjs'), esmServerCode);
-          fs.writeFileSync(path.join(dir, 'app.cjs'), cjsServerCode);
-          fs.writeFileSync(path.join(dir, 'server.js'), esmServerCode);
-          fs.writeFileSync(path.join(dir, 'server.mjs'), esmServerCode);
-          fs.writeFileSync(path.join(dir, 'server.cjs'), cjsServerCode);
-        } catch (e) {
-          // ignore write errors
-        }
+      ['index.js', 'index.mjs', 'app.js', 'app.mjs', 'server.js', 'server.mjs'].forEach(fileName => {
+        this.emitFile({
+          type: 'asset',
+          fileName,
+          source: esmServerCode
+        });
+      });
+
+      ['index.cjs', 'app.cjs', 'server.cjs'].forEach(fileName => {
+        this.emitFile({
+          type: 'asset',
+          fileName,
+          source: cjsServerCode
+        });
       });
     }
   };
