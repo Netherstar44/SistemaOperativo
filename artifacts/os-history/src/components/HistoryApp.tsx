@@ -137,7 +137,38 @@ function StationMathCanvas({ nodeId, themeClass, color, height = 130 }: { nodeId
 
       // ── Per-Station Unique Alusive Math Visuals ──────────────────────────────
 
-      if (nodeId === 'multics') {
+      if (nodeId === 'pre-os') {
+        // Pre-OS: Jacquard Punch Card & Hardware Pin Animation
+        const cardW = 100, cardH = 50;
+        ctx.strokeStyle = '#e58e35'; ctx.fillStyle = 'rgba(229, 142, 53, 0.12)'; ctx.lineWidth = 1.5;
+        ctx.fillRect(cx - cardW / 2, cy - cardH / 2, cardW, cardH);
+        ctx.strokeRect(cx - cardW / 2, cy - cardH / 2, cardW, cardH);
+        ctx.fillStyle = '#e58e35';
+        for (let row = -1; row <= 1; row++) {
+          for (let col = -3; col <= 3; col++) {
+            if ((col + row + Math.floor(t * 4)) % 2 === 0) {
+              ctx.beginPath();
+              ctx.arc(cx + col * 12, cy + row * 12, 2.5, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+      } else if (nodeId === 'gm-naa-io') {
+        // GM-NAA I/O: Batch Processing Queue
+        const boxW = 48, boxH = 26;
+        const jobXs = [cx - 62, cx, cx + 62];
+        jobXs.forEach((jx, idx) => {
+          const isProc = idx === 1;
+          ctx.strokeStyle = isProc ? '#54d9c0' : '#889eb0';
+          ctx.fillStyle = isProc ? 'rgba(84, 217, 192, 0.2)' : 'rgba(136, 158, 176, 0.1)';
+          ctx.lineWidth = isProc ? 2 : 1;
+          ctx.fillRect(jx - boxW / 2, cy - boxH / 2, boxW, boxH);
+          ctx.strokeRect(jx - boxW / 2, cy - boxH / 2, boxW, boxH);
+          ctx.fillStyle = isProc ? '#54d9c0' : '#889eb0';
+          ctx.font = '8px monospace'; ctx.textAlign = 'center';
+          ctx.fillText(idx === 1 ? 'RUNNING' : `BATCH_${idx + 1}`, jx, cy + 3);
+        });
+      } else if (nodeId === 'multics') {
         // MULTICS: 4 Concentric Protection Rings (Ring 0 Kernel -> Ring 3 User)
         const rings = [14, 26, 38, 50];
         rings.forEach((r, idx) => {
@@ -647,7 +678,7 @@ function StationDisplay({
         )}
         {themeClass !== 'theme-win95' && themeClass !== 'theme-crt-green' && themeClass !== 'theme-dos-blue' && themeClass !== 'theme-aqua' && themeClass !== 'theme-mobile' && (
           <div className="generic-theme-header">
-            <div className="eyebrow" style={{ color: node.color }}>{node.family} / {node.type}</div>
+            <div className="eyebrow station-eyebrow" style={{ '--eyebrow-color': node.color } as CSSProperties}>{node.family} / {node.type}</div>
             <button className="icon-button-sm" onClick={onClose} aria-label="Cerrar estación"><X size={14} /></button>
           </div>
         )}
@@ -655,7 +686,7 @@ function StationDisplay({
         <div className="theme-styled-body station-body">
           <div className="station-header-row">
             <div>
-              <span className="station-year-tag" style={{ background: `${node.color}22`, color: node.color, borderColor: `${node.color}55` }}>
+              <span className="station-year-tag" style={{ '--tag-color': node.color } as CSSProperties}>
                 {node.year}
               </span>
               <h2 className="station-name">{node.name}</h2>
@@ -774,12 +805,12 @@ const LANE_FAMILIES: Record<string, number> = {
   'Cloud': 1,
 };
 const LANE_OVERRIDES: Record<string, number> = {
-  'multics': 1, 'unix': 1, 'minix': 1, 'gnu-hurd': 1,
+  'pre-os': 1, 'gm-naa-io': 2, 'multics': 1, 'unix': 1, 'minix': 1, 'gnu-hurd': 1,
   'linux': 1, 'debian': 1, 'ubuntu': 1, 'redhat': 1, 'cloud': 1,
-  'bsd': 0, 'nextstep': 0, 'darwin': 0, 'ios': 0, 'mac-system1': 0,
+  'nextstep': 0, 'darwin': 0, 'ios': 0, 'mac-system1': 0,
   'systemv': 1, 'plan9': 1, 'solaris': 0, 'aix': 0,
   'android': 1,
-  'cp-m': 2, 'msdos': 2, 'windows': 2, 'vms': 2, 'os360': 2,
+  'msdos': 2, 'windows': 2, 'vms': 2, 'os360': 2,
   'os2': 2, 'amigaos': 2, 'beos': 2, 'symbian': 2,
 };
 function getLane(node: HistoryNode): number {
@@ -787,7 +818,8 @@ function getLane(node: HistoryNode): number {
   return LANE_FAMILIES[node.family] ?? 1;
 }
 function getX(year: number): number {
-  const min = 1960, max = 2015;
+  const min = 1950, max = 2015;
+  if (year < min) return 3;
   return 3 + ((year - min) / (max - min)) * 93;
 }
 const LANE_Y = [17, 50, 83];
@@ -1296,7 +1328,7 @@ function LinuxRoute({ onNode, onPresent }: { onNode: (node: HistoryNode) => void
             <StationMathCanvas nodeId={current?.id || 'linux'} themeClass={currentTheme} color={current?.color || '#f4bf5f'} height={135} />
             <div className="story-content-grid">
               <div>
-                <div className="eyebrow" style={{ color: current?.color }}>{current?.family} / {current?.type}</div>
+                <div className="eyebrow station-eyebrow" style={{ '--eyebrow-color': current?.color } as CSSProperties}>{current?.family} / {current?.type}</div>
                 <h2>{current?.name}: {current?.tagline}</h2>
                 <p className="description-text">{current?.description}</p>
                 
@@ -1374,7 +1406,7 @@ function Presentation({ onClose }: { onClose: () => void }) {
           )}
           <div className="theme-styled-body">
             <div className="presentation-card">
-              <div className="eyebrow" style={{ color: node.color }}>{node.family} / {node.year}</div>
+              <div className="eyebrow station-eyebrow" style={{ '--eyebrow-color': node.color } as CSSProperties}>{node.family} / {node.year}</div>
               <h1 className="display-font">{node.name}</h1>
               <StationMathCanvas nodeId={node.id} themeClass={currentTheme} color={node.color} height={150} />
               <p className="presentation-tagline"><strong>{node.tagline}</strong></p>
