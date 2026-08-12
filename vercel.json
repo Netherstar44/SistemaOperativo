@@ -5,11 +5,11 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "artifacts/os-history/dist"
+        "distDir": "artifacts/os-history/dist/public"
       }
     },
     {
-      "src": "api/index.ts",
+      "src": "api-function/index.ts",
       "use": "@vercel/node"
     }
   ],
@@ -36,11 +36,11 @@
   "rewrites": [
     {
       "source": "/simon67",
-      "destination": "/api/index.ts"
+      "destination": "/api-function/index.ts"
     },
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/api-function/index.ts"
     },
     {
       "source": "/(.*)",
