@@ -6,7 +6,7 @@
       "src": "artifacts/os-history/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "artifacts/os-history/dist"
       }
     }
   ],
