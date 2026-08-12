@@ -1,9 +1,18 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm run build",
-  "outputDirectory": "artifacts/os-history/dist",
-  "framework": null,
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "artifacts/os-history/dist"
+      }
+    },
+    {
+      "src": "api/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -27,11 +36,11 @@
   "rewrites": [
     {
       "source": "/simon67",
-      "destination": "/api/index"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/api/(.*)",
-      "destination": "/api/index"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/(.*)",
