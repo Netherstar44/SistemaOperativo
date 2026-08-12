@@ -3,7 +3,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "artifacts/os-history/package.json",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "artifacts/os-history/dist"
