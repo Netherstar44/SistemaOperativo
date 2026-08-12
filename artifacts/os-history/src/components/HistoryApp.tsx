@@ -17,7 +17,9 @@ function Logo() {
   </Link>;
 }
 
-function Topbar({ view, onSearch, onPresent, onOpenReferences }: { view: View; onSearch: () => void; onPresent: () => void; onOpenReferences: () => void }) {
+type PresentMode = 'all' | 'trunk';
+
+function Topbar({ view, onSearch, onPresentAll, onPresentTrunk, onOpenReferences }: { view: View; onSearch: () => void; onPresentAll: () => void; onPresentTrunk: () => void; onOpenReferences: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
   return <header className="topbar">
     <Logo />
@@ -25,7 +27,10 @@ function Topbar({ view, onSearch, onPresent, onOpenReferences }: { view: View; o
       <Link href="/" aria-current={view === 'timeline' ? 'page' : undefined} data-testid="link-timeline">Línea del tiempo</Link>
       <Link href="/ruta-linux" aria-current={view === 'route' ? 'page' : undefined} data-testid="link-route">Ruta Linux</Link>
       <Link href="/comparar" aria-current={view === 'compare' ? 'page' : undefined} data-testid="link-compare">Comparar</Link>
-      <button onClick={onPresent} data-testid="button-presentation"><MonitorPlay size={14} /> Presentación</button>
+      <div className="pres-btn-group">
+        <button onClick={onPresentAll} data-testid="button-presentation-all" title="Presentación de todas las ramas"><MonitorPlay size={14} /> Todas las ramas</button>
+        <button onClick={onPresentTrunk} data-testid="button-presentation-trunk" title="Solo tronco principal"><GitBranch size={14} /> Solo tronco</button>
+      </div>
       <button onClick={onOpenReferences} data-testid="button-references"><BookOpen size={14} /> Referencias</button>
     </nav>
     <div className="topbar-actions">
@@ -36,7 +41,8 @@ function Topbar({ view, onSearch, onPresent, onOpenReferences }: { view: View; o
       <Link href="/" onClick={() => setMenuOpen(false)} data-testid="mobile-link-timeline" style={{ color: 'hsl(var(--foreground))', textDecoration: 'none', padding: '.7rem' }}>Línea del tiempo</Link>
       <Link href="/ruta-linux" onClick={() => setMenuOpen(false)} data-testid="mobile-link-route" style={{ color: 'hsl(var(--foreground))', textDecoration: 'none', padding: '.7rem' }}>Ruta Linux</Link>
       <Link href="/comparar" onClick={() => setMenuOpen(false)} data-testid="mobile-link-compare" style={{ color: 'hsl(var(--foreground))', textDecoration: 'none', padding: '.7rem' }}>Comparar sistemas</Link>
-      <button onClick={() => { onPresent(); setMenuOpen(false); }} style={{ textAlign: 'left', color: 'hsl(var(--foreground))', background: 'none', border: 0, padding: '.7rem' }} data-testid="mobile-button-presentation">Modo presentación</button>
+      <button onClick={() => { onPresentAll(); setMenuOpen(false); }} style={{ textAlign: 'left', color: 'hsl(var(--foreground))', background: 'none', border: 0, padding: '.7rem' }} data-testid="mobile-button-presentation-all"><MonitorPlay size={13} /> Presentar todas las ramas</button>
+      <button onClick={() => { onPresentTrunk(); setMenuOpen(false); }} style={{ textAlign: 'left', color: 'hsl(var(--foreground))', background: 'none', border: 0, padding: '.7rem' }} data-testid="mobile-button-presentation-trunk"><GitBranch size={13} /> Presentar solo tronco</button>
       <button onClick={() => { onOpenReferences(); setMenuOpen(false); }} style={{ textAlign: 'left', color: 'hsl(var(--foreground))', background: 'none', border: 0, padding: '.7rem' }} data-testid="mobile-button-references">Referencias bibliográficas</button>
     </div>}
   </header>;
@@ -708,10 +714,12 @@ function StationDisplay({
             <div className="info-block">
               <h4>El Contexto Histórico</h4>
               <p>{node.context}</p>
+              <cite className="info-citation">{node.citation}</cite>
             </div>
             <div className="info-block">
               <h4>Qué Cambió Técnicamente</h4>
               <p>{node.technical}</p>
+              <cite className="info-citation">{node.citation}</cite>
             </div>
             <div className="info-block">
               <h4>Personas y Equipos</h4>
@@ -720,6 +728,7 @@ function StationDisplay({
             <div className="info-block">
               <h4>Legado</h4>
               <p>{node.legacy}</p>
+              <cite className="info-citation">{node.citation}</cite>
             </div>
           </div>
 
@@ -743,6 +752,7 @@ function StationDisplay({
           )}
 
           <div className="station-footer-actions">
+            <cite className="info-citation" style={{ display: 'block', marginBottom: '.5rem' }}>{node.citation}</cite>
             <a href={node.source.href} target="_blank" rel="noopener noreferrer" className="station-source-link">
               Fuente oficial ↗
             </a>
@@ -782,11 +792,11 @@ function DetailPanel({ node, onClose, onSelect }: { node: HistoryNode | null; on
     <aside className="detail-panel" aria-label={node ? `Detalles de ${node.name}` : undefined}>
       {node && <><div className="detail-top"><div><div className="eyebrow" style={{ color: node.color }}>{node.family} / {node.type}</div><h2 className="detail-title">{node.name}</h2><div className="detail-year">{node.year}</div></div><button className="icon-button" onClick={onClose} aria-label="Cerrar detalles" data-testid="button-close-detail"><X size={17} /></button></div>
         <p className="detail-description">{node.description}</p>
-        <div className="detail-block"><h4>El contexto</h4><p>{node.context}</p></div>
-        <div className="detail-block"><h4>Qué cambió técnicamente</h4><p>{node.technical}</p></div>
+        <div className="detail-block"><h4>El contexto</h4><p>{node.context}</p><cite className="info-citation">{node.citation}</cite></div>
+        <div className="detail-block"><h4>Qué cambió técnicamente</h4><p>{node.technical}</p><cite className="info-citation">{node.citation}</cite></div>
         <div className="detail-block"><h4>Personas y equipos</h4><p>{node.people}</p></div>
         <div className="detail-block"><h4>¿Por qué importa?</h4><p>{node.why}</p></div>
-        <div className="detail-block"><h4>Legado</h4><p>{node.legacy}</p></div>
+        <div className="detail-block"><h4>Legado</h4><p>{node.legacy}</p><cite className="info-citation">{node.citation}</cite></div>
         {related.length > 0 && <div className="detail-block"><h4>Conexiones en el mapa</h4><div className="detail-links">{related.map((item) => <button className="related-link" key={item.id} onClick={() => onSelect(item)} data-testid={`related-link-${item.id}`}>{item.name} <ChevronRight size={12} style={{ verticalAlign: 'middle' }} /></button>)}</div></div>}
         <a className="source-link" href={node.source.href} target="_blank" rel="noreferrer">Fuente: {node.source.label} ↗</a>
       </>}
@@ -1369,18 +1379,25 @@ function ComparePage() {
   return <main className="page-wrap compare-page"><section className="compare-title"><div className="eyebrow" style={{ color: 'hsl(var(--primary))' }}>Mesa de comparación / archivo 02</div><h1>Dos sistemas.<br /><span style={{ color: 'hsl(var(--primary))' }}>Dos respuestas.</span></h1><p>Comparar no es decidir cuál gana. Es observar qué problema resolvía cada sistema y qué mundo técnico imaginaba.</p></section><div className="compare-selectors"><select className="compare-select" value={left} onChange={(event) => setLeft(event.target.value)} aria-label="Primer sistema" data-testid="select-compare-left">{historyNodes.map((node) => <option key={node.id} value={node.id}>{node.name} — {node.year}</option>)}</select><div className="versus">VS</div><select className="compare-select" value={right} onChange={(event) => setRight(event.target.value)} aria-label="Segundo sistema" data-testid="select-compare-right">{historyNodes.map((node) => <option key={node.id} value={node.id}>{node.name} — {node.year}</option>)}</select></div><div className="compare-table">{rows.map(([label, first, second]) => <div className="compare-row" key={label}><div className="compare-label">{label}</div><div className="compare-value" style={{ borderTop: `2px solid ${a.color}` }}>{first}</div><div className="compare-value" style={{ borderTop: `2px solid ${b.color}` }}>{second}</div></div>)}</div></main>;
 }
 
-function Presentation({ onClose }: { onClose: () => void }) {
+function Presentation({ onClose, nodes, mode }: { onClose: () => void; nodes: HistoryNode[]; mode: PresentMode }) {
   const [index, setIndex] = useState(0);
-  const node = historyNodes[index];
-  const move = (delta: number) => setIndex((value) => Math.min(historyNodes.length - 1, Math.max(0, value + delta)));
+  const node = nodes[index];
+  const move = (delta: number) => setIndex((value) => Math.min(nodes.length - 1, Math.max(0, value + delta)));
+  useEffect(() => { setIndex(0); }, [nodes]);
   useEffect(() => { const key = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); if (event.key === 'ArrowRight') move(1); if (event.key === 'ArrowLeft') move(-1); }; window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key); });
 
+  if (!node) return null;
   const currentTheme = node?.themeClass || 'theme-tux';
 
   return <div className={`presentation ${currentTheme}`}>
     <div className="theme-frame-decorator" aria-hidden="true">
       {currentTheme === 'theme-crt-green' && <div className="crt-scanlines"></div>}
       {currentTheme === 'theme-win95' && <div className="win95-desktop-bg"></div>}
+    </div>
+
+    {/* Mode badge */}
+    <div className="pres-mode-badge">
+      {mode === 'trunk' ? <><GitBranch size={11} /> Solo tronco principal</> : <><Layers3 size={11} /> Todas las ramas</>}
     </div>
 
     <AnimatePresence mode="wait">
@@ -1404,11 +1421,11 @@ function Presentation({ onClose }: { onClose: () => void }) {
               <span>EXHIBIT_SLIDE: {node.name.toUpperCase()} (SYS_INFO)</span>
             </div>
           )}
-          <div className="theme-styled-body">
+          <div className="theme-styled-body pres-body-scroll">
             <div className="presentation-card">
               <div className="eyebrow station-eyebrow" style={{ '--eyebrow-color': node.color } as CSSProperties}>{node.family} / {node.year}</div>
               <h1 className="display-font">{node.name}</h1>
-              <StationMathCanvas nodeId={node.id} themeClass={currentTheme} color={node.color} height={150} />
+              <StationMathCanvas nodeId={node.id} themeClass={currentTheme} color={node.color} height={120} />
               <p className="presentation-tagline"><strong>{node.tagline}</strong></p>
               <p className="presentation-desc">{node.description}</p>
               
@@ -1416,10 +1433,12 @@ function Presentation({ onClose }: { onClose: () => void }) {
                 <div className="pres-detail-block">
                   <span>El Impacto</span>
                   <p>{node.why}</p>
+                  <cite className="info-citation">{node.citation}</cite>
                 </div>
                 <div className="pres-detail-block">
                   <span>Arquitectura</span>
                   <p>{node.technical}</p>
+                  <cite className="info-citation">{node.citation}</cite>
                 </div>
               </div>
             </div>
@@ -1430,7 +1449,7 @@ function Presentation({ onClose }: { onClose: () => void }) {
 
     <div className="presentation-controls">
       <button className="icon-button" onClick={() => move(-1)} aria-label="Anterior" data-testid="presentation-previous"><ArrowLeft size={17} /></button>
-      <span className="presentation-count">{String(index + 1).padStart(2, '0')} — {String(historyNodes.length).padStart(2, '0')}</span>
+      <span className="presentation-count">{String(index + 1).padStart(2, '0')} — {String(nodes.length).padStart(2, '0')}</span>
       <button className="icon-button" onClick={() => move(1)} aria-label="Siguiente" data-testid="presentation-next"><ArrowRight size={17} /></button>
       <button className="icon-button" onClick={onClose} aria-label="Salir de presentación" data-testid="presentation-close"><X size={17} /></button>
     </div>
@@ -1438,28 +1457,31 @@ function Presentation({ onClose }: { onClose: () => void }) {
   </div>;
 }
 
+const trunkNodes = historyNodes.filter((n) => n.isTrunk);
+
 export function HistoryApp() {
   const [location, setLocation] = useLocation();
   const [searchOpen, setSearchOpen] = useState(false);
   const [detail, setDetail] = useState<HistoryNode | null>(null);
-  const [presentation, setPresentation] = useState(false);
+  const [presentation, setPresentation] = useState<PresentMode | null>(null);
   const [referencesOpen, setReferencesOpen] = useState(false);
   const view: View = location === '/ruta-linux' ? 'route' : location === '/comparar' ? 'compare' : 'timeline';
   
   useEffect(() => { const key = (event: KeyboardEvent) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setSearchOpen(true); } }; window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key); }, []);
   
   const selectNode = (node: HistoryNode) => { setDetail(node); if (view !== 'timeline') setLocation('/'); };
+  const presentNodes = presentation === 'trunk' ? trunkNodes : historyNodes;
   
   return <div className="museum-app">
-    <Topbar view={view} onSearch={() => setSearchOpen(true)} onPresent={() => setPresentation(true)} onOpenReferences={() => setReferencesOpen(true)} />
-    {view === 'timeline' && <Landing onNode={selectNode} onSearch={() => setSearchOpen(true)} onPresent={() => setPresentation(true)} onRoute={() => setLocation('/ruta-linux')} />}
-    {view === 'route' && <LinuxRoute onNode={selectNode} onPresent={() => setPresentation(true)} />}
+    <Topbar view={view} onSearch={() => setSearchOpen(true)} onPresentAll={() => setPresentation('all')} onPresentTrunk={() => setPresentation('trunk')} onOpenReferences={() => setReferencesOpen(true)} />
+    {view === 'timeline' && <Landing onNode={selectNode} onSearch={() => setSearchOpen(true)} onPresent={() => setPresentation('all')} onRoute={() => setLocation('/ruta-linux')} />}
+    {view === 'route' && <LinuxRoute onNode={selectNode} onPresent={() => setPresentation('all')} />}
     {view === 'compare' && <ComparePage />}
     
     <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} onSelect={selectNode} />
     <ReferencesOverlay open={referencesOpen} onClose={() => setReferencesOpen(false)} />
     
     {view !== 'timeline' && <DetailPanel node={detail} onClose={() => setDetail(null)} onSelect={selectNode} />}
-    {presentation && <Presentation onClose={() => setPresentation(false)} />}
+    {presentation && <Presentation onClose={() => setPresentation(null)} nodes={presentNodes} mode={presentation} />}
   </div>;
 }
