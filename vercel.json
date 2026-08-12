@@ -1,15 +1,5 @@
 {
-  "version": 2,
-  "framework": null,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "artifacts/os-history/dist/public"
-      }
-    }
-  ],
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -33,11 +23,11 @@
   "rewrites": [
     {
       "source": "/simon67",
-      "destination": "/api-function/index.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/api/(.*)",
-      "destination": "/api-function/index.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/(.*)",
