@@ -3,7 +3,7 @@
   "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm run build",
   "outputDirectory": "artifacts/os-history/dist",
-  "framework": "vite",
+  "framework": null,
   "headers": [
     {
       "source": "/assets/(.*)",
