@@ -8,10 +8,6 @@
       "config": {
         "distDir": "artifacts/os-history/dist/public"
       }
-    },
-    {
-      "src": "api-function/index.ts",
-      "use": "@vercel/node"
     }
   ],
   "headers": [
