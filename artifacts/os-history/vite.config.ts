@@ -23,8 +23,8 @@ export default defineConfig({
   root: currentDir,
   build: {
     outDir: path.resolve(currentDir, 'dist'),
-    // Do NOT empty outDir — we commit entrypoint stubs there so Vercel can find them
-    emptyOutDir: false,
+    // Clean output dir on every build
+    emptyOutDir: true,
     chunkSizeWarningLimit: 1500,
   },
   server: {
