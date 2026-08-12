@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "npm install -g pnpm && pnpm install --no-frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm run build",
   "outputDirectory": "artifacts/os-history/dist",
   "framework": "vite",
@@ -27,11 +27,11 @@
   "rewrites": [
     {
       "source": "/simon67",
-      "destination": "/artifacts/api-server/api/index"
+      "destination": "/api/index"
     },
     {
       "source": "/api/(.*)",
-      "destination": "/artifacts/api-server/api/index"
+      "destination": "/api/index"
     },
     {
       "source": "/(.*)",
