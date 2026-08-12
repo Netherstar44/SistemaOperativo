@@ -1,5 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm --filter os-history-museum run build && node artifacts/os-history/scripts/post-build.cjs",
   "outputDirectory": "artifacts/os-history/dist",
   "headers": [
     {
