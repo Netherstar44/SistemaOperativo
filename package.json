@@ -5,7 +5,7 @@
   "scripts": {
     "preinstall": "node -e \"const fs = require('fs'); ['package-lock.json', 'yarn.lock'].forEach(f => fs.existsSync(f) && fs.unlinkSync(f)); if (!/pnpm/.test(process.env.npm_config_user_agent || '')) { console.error('\\n========================================================\\n[ERROR] Este proyecto usa pnpm workspaces (catalogos y rutas locales).\\nPor favor, ejecuta: pnpm install\\n========================================================\\n'); process.exit(1); }\"",
     "dev": "pnpm --filter os-history-museum dev",
-    "build": "pnpm --filter os-history-museum run build",
+    "build": "pnpm --filter os-history-museum run build && node -e \"const fs=require('fs'); fs.cpSync('artifacts/os-history/dist', 'public', {recursive:true}); console.log('Copied dist to public/')\"",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
