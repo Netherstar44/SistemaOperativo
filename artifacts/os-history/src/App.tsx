@@ -7,6 +7,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { HistoryApp } from '@/components/HistoryApp';
+import { SimonBrainrotEgg } from '@/components/SimonBrainrotEgg';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ function Router() {
         <Route path="/" component={HistoryApp} />
         <Route path="/ruta-linux" component={HistoryApp} />
         <Route path="/comparar" component={HistoryApp} />
+        <Route path="/simon67" component={SimonBrainrotEgg} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
