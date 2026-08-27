@@ -3,10 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "main": "dist/index.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node -e \"const fs=require('fs'); ['index.js','index.mjs','index.cjs','app.js','app.mjs','app.cjs','server.js','server.mjs','server.cjs'].forEach(f=>fs.existsSync('public/'+f)&&fs.copyFileSync('public/'+f, 'dist/'+f)); console.log('Copied entrypoint stubs to dist');\"",
+    "build": "vite build",
     "serve": "vite preview",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
